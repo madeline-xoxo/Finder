@@ -1,14 +1,14 @@
 {
-  "name": "about-this-mac",
+  "name": "finder",
   "version": "1.0.0",
   "main": "dist-electron/main/index.js",
-  "description": "A tool made to replicate the Snow Leopard-era About This Mac dialogue.",
+  "description": "A Finder replica for Linux, for use with my OSX rice.",
   "author": {
     "name": "madzzz",
     "email": "robotspriv@gmail.com",
     "url": "https://nota-robot.com"
   },
-  "homepage": "https://github.com/madeline-xoxo/about-this-mac",
+  "homepage": "https://github.com/madeline-xoxo/Finder",
   "license": "GNU GPLv3",
   "private": true,
   "debug": {
@@ -21,7 +21,7 @@
     "build-arch": "tsc && vite build && electron-builder -l pacman",
     "build-macos": "tsc && vite build && electron-builder -m dmg",
     "build-windows": "tsc && vite build && electron-builder -w portable",
-    "install": "sudo pacman -R about-this-mac && cd release/1.0.0 && sudo pacman -U about-this-mac-1.0.0.pacman",
+    "install": "sudo pacman -R finder && cd release/1.0.0 && sudo pacman -U finder-1.0.0.pacman",
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test"
