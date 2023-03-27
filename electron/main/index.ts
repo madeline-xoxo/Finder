@@ -43,8 +43,8 @@ const indexHtml = join(process.env.DIST, 'index.html')
 
 async function createWindow() {
   win = new BrowserWindow({
-    width: 326,
-    height: 400,
+    width: 535,
+    height: 356,
     type: 'toolbar',
     frame: false,
     alwaysOnTop: true,
@@ -57,8 +57,7 @@ async function createWindow() {
       contextIsolation: false,
     },
   })
-  win.setResizable(false);
-  win.setTitle('About This Mac')
+  win.setTitle('Finder')
   if (process.env.VITE_DEV_SERVER_URL) { // electron-vite-vue#298
     win.loadURL(url)
     // Open devTool if the app is not packaged
