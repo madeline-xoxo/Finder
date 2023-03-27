@@ -17,6 +17,15 @@ function App() {
         (header as HTMLDivElement).parentElement?.style.setProperty("--marker", (header as HTMLDivElement).parentElement?.style.getPropertyValue("--marker") == `"▼ "` ? `"▶ "` : `"▼ "`);
       });
     });
+    const items = document.querySelectorAll('.sidebarItem');
+    items.forEach(item => {
+      item.addEventListener('mousedown', (e) => {
+        items.forEach(item2 => {
+          item2.classList.remove('list-selected');
+        })
+        item.classList.add('list-selected');
+      })
+    })
   }, [])
   return (
     <Border>
