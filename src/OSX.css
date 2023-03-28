@@ -38,6 +38,7 @@ body {
 
 #window {
     display: flex;
+    overflow: visible;
     height: 100vh;
     background-color: #ffffff;
 }
@@ -162,6 +163,7 @@ button:focus {
     height: calc(100% - 8px);
     padding-top: 8px;
     flex: 0 0 142px;
+    width: 142px;
     border: solid thin #c0c0c0;
 }
 
@@ -219,6 +221,16 @@ ul {
     font-weight: bold;
 }
 
+.files-selected {
+    background: linear-gradient(180deg, rgba(126, 179, 224, 1) 0%, rgba(43, 125, 194, 1) 100%);
+}
+
+
+.files-selected>div {
+    color: white;
+    font-weight: bold;
+}
+
 .file-icon {
     width: 48px;
 }
@@ -230,7 +242,36 @@ ul {
 
 
 #files {
-    padding: 10px;
     flex: 1;
-    overflow: visible;
+    overflow-y: scroll;
+    overflow-x:hidden;
+    height: calc(100% + 13px);
+    width: calc(100% + 20px);
+}
+
+#window-content {
+    width: calc(100% - 164px);
+    height: calc(100% - 90px);
+    margin-top: 53px;
+    margin-left: -8px;
+}
+
+.fileItem {
+    width: calc(100% + 20px);
+    display: flex;
+    flex-direction: row;
+    font-size: 8.2pt;
+    padding: 3px 0px;
+}
+
+.fileItem>div {
+    margin-top: 3px;
+    margin-left: 4px;
+}
+
+#content-container {
+    padding: 52px 7.5px 7.5px 0px;
+    height: 100%;
+    flex-wrap: nowrap;
+    flex-direction: row;
 }

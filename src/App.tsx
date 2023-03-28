@@ -41,6 +41,7 @@ const places = [
 
 function App() {
   const [location, setLocation] = useState<string[]>();
+  const [currentPath, setCurrentPath] = useState<string>("");
   useEffect(() => {
     var headers = document.querySelectorAll('.collapsible-header');
     headers.forEach((header) => {
@@ -51,33 +52,73 @@ function App() {
         (header as HTMLDivElement).parentElement?.style.setProperty("--marker", (header as HTMLDivElement).parentElement?.style.getPropertyValue("--marker") == `"▼ "` ? `"▶ "` : `"▼ "`);
       });
     });
-    const items = document.querySelectorAll('.sidebarItem');
-    items.forEach(item => {
-      item.addEventListener('mousedown', (e) => {
-        const dir = (item as HTMLDivElement).dataset.location!;
-        const sidebarselected = document.querySelectorAll('.list-selected');
-        sidebarselected.forEach(selectedItem => {
-          const itemdir = (selectedItem as HTMLDivElement).dataset.location!;
-          places.find(place => place.location === itemdir)!.selected = false;
+    function setupSidebar() {
+      const items = document.querySelectorAll('.sidebarItem');
+      items.forEach(item => {
+        item.addEventListener('mousedown', (e) => {
+          const dir = (item as HTMLDivElement).dataset.location!;
+          const sidebarselected = document.querySelectorAll('.list-selected');
+          sidebarselected.forEach(selectedItem => {
+            const itemdir = (selectedItem as HTMLDivElement).dataset.location!;
+            const place = places.find(place => place.location === itemdir)!;
+            place.selected = false;
+          })
+          places.find(place => place.location === dir)!.selected = true;
+          setCurrentPath(dir);
+          setLocation(fs.readdirSync(dir));
         })
-        places.find(place => place.location === dir)!.selected = true;
-        setLocation(fs.readdirSync(dir));
+        if (currentPath !== (item as HTMLDivElement).dataset.location) {
+          (item as HTMLDivElement).classList.remove('list-selected')
+        } else {
+          (item as HTMLDivElement).classList.add('list-selected')
+        }
       })
-    })
+    }
+    function setupFiles() {
+      const items = document.querySelectorAll('.fileItem');
+      items.forEach(item => {
+        item.addEventListener('mousedown', (e) => {
+          const sidebarselected = document.querySelectorAll('.fileItem');
+          sidebarselected.forEach(selectedItem => {
+            const selected = (selectedItem as HTMLDivElement);
+            selected.classList.remove('files-selected')
+          })
+          const htmldiv = (e.target as HTMLDivElement);
+          if (htmldiv.parentElement?.classList.contains('fileItem')) {
+            htmldiv.parentElement?.classList.add('files-selected')
+          } else {
+            htmldiv.classList.add('files-selected')
+          }
+        })
+      })
+    }
+    setupSidebar();
+    setupFiles();
   }, [location])
   return (
     <Border>
-      <Sidebar>
-        <SidebarList>
-          {places.map(place => (
-            <SidebarItem selected={place.selected} key={Math.random()} dataLocation={place.location} icon={place.icon}>{place.name}</SidebarItem>
-          ))}
-        </SidebarList>
-      </Sidebar>
-      <div id="files">{location?.map(folder => {
-        return <SidebarItem icon={folderSmall} dataLocation="" selected={false}>a</SidebarItem>
-      })}</div>
-      <div id="footer" />
+      <div id="content">
+        <div id="contentContainer">
+          <Sidebar>
+            <SidebarList>
+              {places.map(place => (
+                <SidebarItem selected={place.selected} key={Math.random()} dataLocation={place.location} icon={place.icon}>{place.name}</SidebarItem>
+              ))}
+            </SidebarList>
+          </Sidebar>
+        </div>
+        <div id="footer" />
+      </div>
+      <div id="window-content">
+            <div id="files">{location?.map(folder => {
+              return <File onDoubleClick={(e) => {
+                if (fs.lstatSync(`${currentPath}/${folder}`).isDirectory()) {
+                  setCurrentPath(`${currentPath}/${folder}`)
+                  setLocation(fs.readdirSync(`${currentPath}/${folder}`));
+                }
+              }} key={`${Date.now()}${folder}`} icon={fs.lstatSync(`${currentPath}/${folder}`).isDirectory() ? folderSmall : ""} selected={false}>{folder}</File>
+            })}</div>
+          </div>
     </Border>
 
   );

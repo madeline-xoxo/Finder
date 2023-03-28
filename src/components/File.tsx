@@ -1,14 +1,16 @@
-interface IIconProps extends React.HTMLAttributes<HTMLDivElement> {
+import React from "react";
+
+interface IFileProps extends React.HTMLAttributes<HTMLDivElement> {
     icon: string;
+    children: any;
+    selected: boolean;
 }
 
-export default function File(props: IIconProps) {
+export default function File(props: IFileProps) {
     return (
-        <div className="file">
-            <div className="file-contents">
-                <img className="file-icon" src={props.icon} />
-                <div className="file-label">{props.children}</div>
-            </div>
+        <div onDoubleClick={props.onDoubleClick} onMouseDown={props.onMouseDown} className={`fileItem`}>
+            <img className="icon" src={props.icon} />
+            <div>{props.children}</div>
         </div>
     )
 }

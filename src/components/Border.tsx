@@ -16,9 +16,7 @@ export default function Border(props: any) {
           </div>
         </div>
         <div id="window">
-          <div id="content">
-            {props.children}
-          </div>
+          {props.children}
         </div>
       </div>
     )
