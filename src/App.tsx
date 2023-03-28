@@ -4,9 +4,37 @@ import folderSmall from './img/folder-small.png'
 import Sidebar from './components/Sidebar';
 import SidebarItem from './components/SidebarItem';
 import SidebarList from './components/SidebarList';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import * as os from 'os';
+import * as fs from 'fs';
+import untildify from 'untildify';
+
+const places = [
+  {
+    icon: folderSmall,
+    name: 'Desktop',
+    location: '/home/mads/Desktop',
+  }, {
+    icon: folderSmall,
+    name: os.userInfo().username,
+    location: os.homedir(),
+  }, {
+    icon: folderSmall,
+    name: 'Pictures',
+    location: '/home/mads/Pictures',
+  }, {
+    icon: folderSmall,
+    name: 'Videos',
+    location: '/home/mads/Videos',
+  }, {
+    icon: folderSmall,
+    name: 'Documents',
+    location: '/home/mads/Documents',
+  },
+]
 
 function App() {
+  const [location, setLocation] = useState(os.homedir());
   useEffect(() => {
     var headers = document.querySelectorAll('.collapsible-header');
     headers.forEach((header) => {
@@ -20,26 +48,27 @@ function App() {
     const items = document.querySelectorAll('.sidebarItem');
     items.forEach(item => {
       item.addEventListener('mousedown', (e) => {
-        items.forEach(item2 => {
-          item2.classList.remove('list-selected');
+        const sidebarselected = document.querySelectorAll('.list-selected');
+        sidebarselected.forEach(selectedItem => {
+          console.log(selectedItem)
+          selectedItem.classList.remove('list-selected');
         })
         item.classList.add('list-selected');
+        const dir = (item as HTMLDivElement).dataset.location!;
+        setLocation(dir);
       })
     })
-  }, [])
+  }, [location])
   return (
     <Border>
       <Sidebar>
         <SidebarList>
-          <SidebarItem icon={folderSmall}>Desktop</SidebarItem>
-          <SidebarItem icon={folderSmall}>madzzz</SidebarItem>
-          <SidebarItem icon={folderSmall}>Applications</SidebarItem>
-          <SidebarItem icon={folderSmall}>Pictures</SidebarItem>
-          <SidebarItem icon={folderSmall}>Movies</SidebarItem>
-          <SidebarItem icon={folderSmall}>Documents</SidebarItem>
-
+          {places.map(place => (
+            <SidebarItem key={Math.random()} dataLocation={place.location} icon={place.icon}>{place.name}</SidebarItem>
+          ))}
         </SidebarList>
       </Sidebar>
+      <div id="list" style={{ padding: 15 }}>{location}</div>
     </Border>
   );
 }
