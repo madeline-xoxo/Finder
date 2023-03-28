@@ -219,6 +219,7 @@ ul {
 .list-selected>div {
     color: white;
     font-weight: bold;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.40);
 }
 
 .files-selected {
@@ -229,6 +230,7 @@ ul {
 .files-selected>div {
     color: white;
     font-weight: bold;
+    text-shadow: 0px 1px 1px rgba(0,0,0,0.40);
 }
 
 .file-icon {
