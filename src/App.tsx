@@ -10,6 +10,22 @@ import * as os from 'os';
 import * as fs from 'fs';
 import File from './components/File';
 
+function getCommandLine() {
+  switch (process.platform) {
+    case 'darwin':
+      return 'open';
+    default:
+      return 'xdg-open';
+  }
+}
+
+function openFileWithDefaultApp(file) {
+  /^win/.test(process.platform) ?
+    require("child_process").exec('start "" "' + file + '"') :
+    require("child_process").spawn(getCommandLine(), [file],
+      { detached: true, stdio: 'ignore' }).unref();
+}
+
 const places = [
   {
     icon: folderSmall,
@@ -110,15 +126,17 @@ function App() {
         <div id="footer" />
       </div>
       <div id="window-content">
-            <div id="files">{location?.map(folder => {
-              return <File onDoubleClick={(e) => {
-                if (fs.lstatSync(`${currentPath}/${folder}`).isDirectory()) {
-                  setCurrentPath(`${currentPath}/${folder}`)
-                  setLocation(fs.readdirSync(`${currentPath}/${folder}`));
-                }
-              }} key={`${Date.now()}${folder}`} icon={fs.lstatSync(`${currentPath}/${folder}`).isDirectory() ? folderSmall : ""} selected={false}>{folder}</File>
-            })}</div>
-          </div>
+        <div id="files">{location?.map(folder => {
+          return <File onDoubleClick={(e) => {
+            if (fs.lstatSync(`${currentPath}/${folder}`).isDirectory()) {
+              setCurrentPath(`${currentPath}/${folder}`)
+              setLocation(fs.readdirSync(`${currentPath}/${folder}`));
+            } else {
+              openFileWithDefaultApp(`${currentPath}/${folder}`)
+            }
+          }} key={`${Date.now()}${folder}`} icon={fs.lstatSync(`${currentPath}/${folder}`).isDirectory() ? folderSmall : ""} selected={false}>{folder}</File>
+        })}</div>
+      </div>
     </Border>
 
   );
