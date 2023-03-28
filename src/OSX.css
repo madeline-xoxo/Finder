@@ -46,6 +46,7 @@ body {
     display: flex;
     padding: 52px 7.5px 7.5px 0px;
     height: 100%;
+    flex-wrap: wrap;
 }
 
 #apple-logo {
@@ -105,7 +106,7 @@ button:focus {
 .value {
     text-align: left;
     margin-left: 100px;
-    user-select:text;
+    user-select: text;
 }
 
 #footer-container {
@@ -117,9 +118,14 @@ button:focus {
 
 #footer {
     text-align: center;
-    opacity: 0.5;
     font-size: 8pt;
-    line-height: 12.5px;
+    width: 100%;
+    height: 22px;
+    left: -1px;
+    border: solid thin #646464;
+    background: linear-gradient(180deg, rgba(212, 212, 212, 1) 0%, rgba(180, 180, 180, 1) 100%);
+    position: absolute;
+    bottom: 0;
 }
 
 #buttons {
@@ -137,7 +143,7 @@ button:focus {
     height: 12px;
     border-radius: 100%;
     border: solid thin #96413e;
-    background: linear-gradient(180deg, rgba(254,249,245,1) 6%, rgba(233,67,58,1) 23%, rgba(234,94,88,1) 67%, rgba(242,172,171,1) 100%);
+    background: linear-gradient(180deg, rgba(254, 249, 245, 1) 6%, rgba(233, 67, 58, 1) 23%, rgba(234, 94, 88, 1) 67%, rgba(242, 172, 171, 1) 100%);
     font-size: 0;
     text-align: center;
     color: rgba(0, 0, 0, 0.5);
@@ -155,7 +161,7 @@ button:focus {
     background-color: #e4e9ee;
     height: calc(100% - 8px);
     padding-top: 8px;
-    width: 142px;
+    flex: 0 0 142px;
     border: solid thin #c0c0c0;
 }
 
@@ -169,7 +175,7 @@ button:focus {
     height: 20px;
 }
 
-.sidebarItem > div {
+.sidebarItem>div {
     margin-top: 3px;
     margin-left: 4px;
     font-weight: normal;
@@ -205,10 +211,26 @@ ul {
 }
 
 .list-selected {
-    background: linear-gradient(180deg, rgba(126,179,224,1) 0%, rgba(43,125,194,1) 100%); 
+    background: linear-gradient(180deg, rgba(126, 179, 224, 1) 0%, rgba(43, 125, 194, 1) 100%);
 }
 
-.list-selected > div {
+.list-selected>div {
     color: white;
     font-weight: bold;
+}
+
+.file-icon {
+    width: 48px;
+}
+
+.file {
+    display: inline-block;
+    padding: 40px;
+}
+
+
+#files {
+    padding: 10px;
+    flex: 1;
+    overflow: visible;
 }

@@ -1,40 +1,46 @@
 import './OSX.css';
 import Border from './components/Border';
 import folderSmall from './img/folder-small.png'
+import folderLarge from './img/folder-large.png';
 import Sidebar from './components/Sidebar';
 import SidebarItem from './components/SidebarItem';
 import SidebarList from './components/SidebarList';
 import { useEffect, useRef, useState } from 'react';
 import * as os from 'os';
 import * as fs from 'fs';
-import untildify from 'untildify';
+import File from './components/File';
 
 const places = [
   {
     icon: folderSmall,
     name: 'Desktop',
     location: '/home/mads/Desktop',
+    selected: true,
   }, {
     icon: folderSmall,
     name: os.userInfo().username,
     location: os.homedir(),
+    selected: false,
   }, {
     icon: folderSmall,
     name: 'Pictures',
     location: '/home/mads/Pictures',
+    selected: false,
   }, {
     icon: folderSmall,
     name: 'Videos',
     location: '/home/mads/Videos',
+    selected: false,
   }, {
     icon: folderSmall,
     name: 'Documents',
     location: '/home/mads/Documents',
+    selected: false,
   },
 ]
 
 function App() {
-  const [location, setLocation] = useState(os.homedir());
+  const [location, setLocation] = useState<string[]>();
   useEffect(() => {
     var headers = document.querySelectorAll('.collapsible-header');
     headers.forEach((header) => {
@@ -48,14 +54,14 @@ function App() {
     const items = document.querySelectorAll('.sidebarItem');
     items.forEach(item => {
       item.addEventListener('mousedown', (e) => {
+        const dir = (item as HTMLDivElement).dataset.location!;
         const sidebarselected = document.querySelectorAll('.list-selected');
         sidebarselected.forEach(selectedItem => {
-          console.log(selectedItem)
-          selectedItem.classList.remove('list-selected');
+          const itemdir = (selectedItem as HTMLDivElement).dataset.location!;
+          places.find(place => place.location === itemdir)!.selected = false;
         })
-        item.classList.add('list-selected');
-        const dir = (item as HTMLDivElement).dataset.location!;
-        setLocation(dir);
+        places.find(place => place.location === dir)!.selected = true;
+        setLocation(fs.readdirSync(dir));
       })
     })
   }, [location])
@@ -64,12 +70,16 @@ function App() {
       <Sidebar>
         <SidebarList>
           {places.map(place => (
-            <SidebarItem key={Math.random()} dataLocation={place.location} icon={place.icon}>{place.name}</SidebarItem>
+            <SidebarItem selected={place.selected} key={Math.random()} dataLocation={place.location} icon={place.icon}>{place.name}</SidebarItem>
           ))}
         </SidebarList>
       </Sidebar>
-      <div id="list" style={{ padding: 15 }}>{location}</div>
+      <div id="files">{location?.map(folder => {
+        return <SidebarItem icon={folderSmall} dataLocation="" selected={false}>a</SidebarItem>
+      })}</div>
+      <div id="footer" />
     </Border>
+
   );
 }
 
