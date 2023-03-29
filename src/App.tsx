@@ -30,7 +30,7 @@ const places = [
   {
     icon: folderSmall,
     name: 'Desktop',
-    location: '/home/mads/Desktop',
+    location: `${os.homedir()}/Desktop`,
     selected: true,
   }, {
     icon: folderSmall,
@@ -40,17 +40,17 @@ const places = [
   }, {
     icon: folderSmall,
     name: 'Pictures',
-    location: '/home/mads/Pictures',
+    location: `${os.homedir()}/Pictures`,
     selected: false,
   }, {
     icon: folderSmall,
     name: 'Videos',
-    location: '/home/mads/Videos',
+    location: `${os.homedir()}/Videos`,
     selected: false,
   }, {
     icon: folderSmall,
     name: 'Documents',
-    location: '/home/mads/Documents',
+    location: `${os.homedir()}/Documents`,
     selected: false,
   },
 ]
